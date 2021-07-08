@@ -1,10 +1,9 @@
 import sys
-from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtGui
 from PyQt5.Qt import QSize
-from networkx.generators import line
-import numpy as np
+from PyQt5.QtWidgets import *
 from conda.common._logic import TRUE
+from networkx.generators import line
 
 form_class = uic.loadUiType("myomok02.ui")[0]
 
@@ -14,34 +13,42 @@ class WindowClass(QMainWindow, form_class) :
         
         # 칸의 상태 (0, 1, 2)
         self.arr2D = [
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-                        
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                                                  
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+    
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                                                  
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+                [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0]
             ]        
         
         # 돌을 둘 차례를 정하기 
         self.flag_wb = True
-        
         # 게임이 끝났는지 여부 
         self.flag_end = False
-        
         # designer에서 그린 것 가져오기
         self.setupUi(self)
         self.pb_reset.clicked.connect(self.myreset)
-        
         # 기본 바둑판 그리기 (pushbutton)  
         self.pb2D = []
-        for i in range(10) :
+        for i in range(19) :
             line = []
-            for j in range(10) :
+            for j in range(19) :
                 pb = QPushButton(self)
                 pb.setText('')
                 pb.setIconSize(QSize(40, 40))
@@ -55,8 +62,8 @@ class WindowClass(QMainWindow, form_class) :
     
     # arr2D 값에 따라 pb2D의 pb 이미지 변경         
     def myrender(self):
-        for i in range(10) :
-            for j in range(10) :
+        for i in range(19) :
+            for j in range(19) :
                 val = self.arr2D[i][j]
                 if val == 0 : 
                     self.pb2D[i][j].setIcon(QtGui.QIcon('images/0.png'))
@@ -109,9 +116,9 @@ class WindowClass(QMainWindow, form_class) :
         
         if d1==5 or d2==5 or d3==5 or d4==5 :
             if self.flag_wb :
-                QMessageBox.information(self, '오목', '백 돌 승리')
+                QMessageBox.information(self, '오목', '[백] 돌 승리')
             else :
-                QMessageBox.information(self, '오목', '흑 돌 승리')
+                QMessageBox.information(self, '오목', '[흑] 돌 승리')
             
             self.flag_end = True
 
@@ -259,8 +266,8 @@ class WindowClass(QMainWindow, form_class) :
         # self.arr2D을 새로 만든다거나 하면 위험
         # 배열 안에 들어있는 건 값이 아니라 주소지라서
         # for문 돌면서 0을 넣어주는 게 좋다
-        for i in range(10) : 
-            for j in range(10) :
+        for i in range(19) : 
+            for j in range(19) :
                 self.arr2D[i][j] = 0
         
         self.myrender()
