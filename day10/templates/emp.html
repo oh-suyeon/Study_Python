@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Flask Template</title>
+<style type="text/css">
+	table, tr, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+	#tb1{
+		width: 800px;
+		text-align: center;
+	}
+	#tb2,#tb3{
+		width: 400px;		
+	}
+	#tb2,#tb3,#btn_td {
+		text-align: center;
+	}
+	#tb1 {
+		border: 0px; 
+	}
+	th {
+		background-color: lightblue;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+	function fn_get_info(btn) {
+		var parent_td = $(btn).parent();
+		var sibling_tds = parent_td.siblings();
+		
+		var e_id = $(btn).text();
+		var e_name = $(sibling_tds[0]).text();
+		var tel = $(sibling_tds[1]).text();
+		var address = $(sibling_tds[2]).text();
+		
+		$('#e_id').val(e_id);
+		$('#e_name').val(e_name);
+		$('#tel').val(tel);
+		$('#address').val(address);
+		
+	}
+</script>
+</head>
+<body>
+<table border="1px" id="tb1">
+	<colgroup>
+		<col style="width: 50%">
+		<col style="width: 50%">
+	</colgroup> 
+	<tr>
+		<td>
+			<div style="width: 100%; height: 100%; text-align: center;">
+				<table border="1px" id="tb2">
+					<tr>
+						<th>사번</th>
+						<th>이름</th>
+						<th>전화번호</th>
+						<th>주소</th>
+					</tr>
+				
+					{% for e in emp_arr %}
+					<tr>
+					    <td>
+					    	<button type="button" onclick="fn_get_info(this);">{{ e.e_id }}</button>
+					    </td>
+					    <td>{{ e.e_name }}</td>
+					    <td>{{ e.tel }}</td>
+					    <td>{{ e.address }}</td>
+					</tr>
+					{% endfor %}
+					
+				</table>	
+			</div>
+		</td>
+	
+		<td>
+			<table border="1px" id="tb3">
+				<tr>
+					<th>사번</th>
+					<td>
+						<input type="text" id="e_id">
+					</td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td>
+						<input type="text" id="e_name">
+					</td>
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td>
+						<input type="text" id="tel">
+					</td>
+				</tr>
+				<tr>
+					<th>주소</th>
+					<td>
+						<input type="text" id="address">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="btn_td">
+						<input type="button" value="추가" id="insert">
+						<input type="button" value="수정" id="update">
+						<input type="button" value="삭제" id="delete">
+					</td>
+				</tr>
+			</table> 	
+		</td>
+	</tr>
+</table>
+
+
+</body>
+</html>

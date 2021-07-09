@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Flask Template</title>
+</head>
+<body>
+	{{my_str}}
+	<ul>
+	{% for item in arr %}
+	    <li>{{ item }}</li>
+	{% endfor%}
+	</ul>
+	
+<table border="1px">
+	<tr>
+		<td>이름</td>
+		<td>전화번호</td>
+	</tr>
+
+	{% for item in arr2 %}
+	<tr>
+	    <td>{{ item.name }}</td>
+	    <td>{{ item.tel }}</td>
+	</tr>
+	{% endfor %}
+	
+</table>	
+	
+</body>
+</html>
