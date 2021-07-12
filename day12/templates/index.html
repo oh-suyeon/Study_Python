@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>index</title>
+<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/axios.min.js"></script>
+<script type="text/javascript">
+	function fn_hello(){
+         var id = '1';
+         var password = '1';
+         var email = '1';
+         axios({
+             method:"POST",
+             url: 'ajax',
+             data:{
+                 "id": id,
+                 "password": password,
+                 "email": email,
+             }
+         }).then((res)=>{
+             console.log(res);
+             alert(res.config.data);
+         }).catch(error=>{
+             console.log(error);
+             throw new Error(error);
+         });
+	}
+</script>
+</head>
+<body>
+	<a id="myid" href="javascript:fn_hello()">good</a>
+</body>
+</html>

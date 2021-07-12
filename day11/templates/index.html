@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>index</title>
+<script src="/js/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+	function fn_hello(){
+		 var id = '1';
+         var password = '1';
+         var email = '1';
+
+         var postdata = {
+             'id':id, 'password':password, 'email':email
+         }
+         $.ajax({
+             type: 'POST',
+             url: 'ajax',
+             async: false,
+             data: JSON.stringify(postdata),
+             dataType : 'JSON',
+             contentType: "application/json",
+             success: function(data){
+                 alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
+             },
+             error: function(request, status, error){
+                 alert('ajax 통신 실패')
+                 alert(error);
+             }
+         })
+	}
+</script>
+</head>
+<body>
+	<a id="myid" href="javascript:fn_hello()">good</a>
+</body>
+</html>

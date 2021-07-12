@@ -25,7 +25,8 @@
 		background-color: lightblue;
 	}
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/axios.min.js"></script>
 <script type="text/javascript">
 	function fn_get_info(btn) {
 		var parent_td = $(btn).parent();
@@ -40,11 +41,55 @@
 		$('#e_name').val(e_name);
 		$('#tel').val(tel);
 		$('#address').val(address);
-		
 	}
+	
+	function fn_setting(e_id, e_name, tel, address){
+		var obj_e_id 	= document.getElementById("e_id");
+		var obj_e_name 	= document.getElementById("e_name");
+		var obj_tel 	= document.getElementById("tel");
+		var obj_address = document.getElementById("address");
+		
+		obj_e_id.value 		= e_id;
+		obj_e_name.value 	= e_name;
+		obj_tel.value 		= tel;
+		obj_address.value 	= address;
+	}
+	
+	function fn_insert(){
+		var e_id = $("#e_id").val();
+        var e_name = $("#e_name").val();
+        var tel = $("#tel").val();
+        var address = $("#address").val();
+
+        axios({
+            method:"POST",
+            url: 'emp_insert.ajax',
+            data:{
+                "e_id": e_id,
+                "e_name": e_name,
+                "tel": tel,
+                "address": address
+            }
+        }).then((res)=>{
+            if(res.data.result == "success"){
+            	location.reload();
+            }else{
+            	alert("추가도중 문제가 생겼습니다.")
+            }
+            console.log(res.data.result);
+            alert(res.config.data);
+        }).catch(error=>{
+            console.log(error);
+            throw new Error(error);
+        });
+	}
+	
+	function fn_update(){}
+	function fn_delete(){}
 </script>
 </head>
 <body>
+
 <table border="1px" id="tb1">
 	<colgroup>
 		<col style="width: 50%">
@@ -63,8 +108,11 @@
 				
 					{% for e in emp_arr %}
 					<tr>
+<!-- 					    <td> -->
+<!-- 					    	<button type="button" onclick="fn_get_info(this);">{{ e.e_id }}</button> -->
+<!-- 					    </td> -->
 					    <td>
-					    	<button type="button" onclick="fn_get_info(this);">{{ e.e_id }}</button>
+					    	<a href="javascript:fn_setting('{{ e.e_id }}','{{ e.e_name }}','{{ e.tel }}','{{ e.address }}')">{{ e.e_id }}</a>
 					    </td>
 					    <td>{{ e.e_name }}</td>
 					    <td>{{ e.tel }}</td>
@@ -104,9 +152,9 @@
 				</tr>
 				<tr>
 					<td colspan="2" id="btn_td">
-						<input type="button" value="추가" id="insert">
-						<input type="button" value="수정" id="update">
-						<input type="button" value="삭제" id="delete">
+						<input type="button" value="추가" onclick="fn_insert();"/>
+						<input type="button" value="수정" onclick="fn_update();"/>
+						<input type="button" value="삭제" onclick="fn_delete();"/>
 					</td>
 				</tr>
 			</table> 	

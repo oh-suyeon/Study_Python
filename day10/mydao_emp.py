@@ -6,8 +6,17 @@ class DaoEmp:
         self.conn = pymysql.connect(host='127.0.0.1', user='root', password='python', db='mypydb', charset='utf8')
         self.cur = self.conn.cursor()
         
-    def insert(self):
-        return 1
+    def insert(self, e_id, e_name, tel, address):
+        sql = f"""
+            INSERT INTO emp 
+                (e_name, tel, address, in_user_id, in_date, up_user_id, up_date) 
+            VALUES 
+                ('{e_name}', '{tel}', '{address}', '1', DATE_FORMAT(NOW(), '%Y%m%d.%H%m%s'), '1', DATE_FORMAT(NOW(), '%Y%m%d.%H%m%s'))
+            """
+        self.cur.execute(sql)
+        self.conn.commit()
+        cnt = self.cur.rowcount
+        return cnt
         
     def selctlist(self): 
         ret = []
@@ -35,5 +44,5 @@ class DaoEmp:
 
 if __name__=='__main__' :
     de = DaoEmp()
-    arr = de.selctlist()
-    print(arr)
+    cnt = de.insert('3', '3', '3', '3')
+    print(cnt)
