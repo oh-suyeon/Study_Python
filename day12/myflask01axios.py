@@ -10,8 +10,8 @@ def hello():
             'index.html',
         )
 
-@app.route('/ajax', methods=['POST'])
-def ajax():
+@app.route('/axios', methods=['POST'])
+def axios():
     data = request.get_json()
     print(data)
     return jsonify(result = "success", result2= data)

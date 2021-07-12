@@ -10,9 +10,11 @@
          var password = '1';
          var email = '1';
 
+         // JSON.stringify() : 자바스크립트 객체를 json 문자열로 변환
          var postdata = {
-             'id':id, 'password':password, 'email':email
+             id:id, password:password, email:email
          }
+         
          $.ajax({
              type: 'POST',
              url: 'ajax',
@@ -21,7 +23,8 @@
              dataType : 'JSON',
              contentType: "application/json",
              success: function(data){
-                 alert('성공! 데이터 값:' + data.result2['id']+" " + data.result2['password']+ " " + data.result2['email'])
+                 alert('성공! 데이터 값:' + data.result2['id']+" " 
+                	+ data.result2['password']+ " " + data.result2['email'])
              },
              error: function(request, status, error){
                  alert('ajax 통신 실패')
