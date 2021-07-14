@@ -1,0 +1,62 @@
+  
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>kakaopay</title>
+    <style>
+    </style>
+    <script src="/js/jquery-3.6.0.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pay').on('click', function () {
+                $.ajax({
+                    url: "/kakaopay/paymethod.ajax",
+                    dataType: "json",
+                    type: "post",
+                    async: false,
+                    statusCode: {
+                        404: function () {
+                            alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+                        }
+                    },
+                    success: function (data) {
+                    	var popUrl = data["next_url"];	
+                    	var popOption = "width=450, height=600, resizable=no, scrollbars=no, status=no;";   
+                   		window.open(popUrl,"",popOption);
+//                         location.href=data["next_url"]
+                    }
+                });
+            });
+        })
+        
+        
+        $(document).ready(function () {
+            $('#cancel').on('click', function () {
+                $.ajax({
+                    url: "/kakaopay/cancel",
+                    dataType: "json",
+                    type: "post",
+                    async: false,
+                    statusCode: {
+                        404: function () {
+                            alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+                        }
+                    },
+                    success: function (data) {
+                        location.href=data["next_url"]
+                    }
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="row mt-5">
+    <h1 class="col-12 text-center my-5">KAKAO PAY</h1>
+   	<button type="button" id="pay">
+   		<img src="images/payment_icon_yellow_medium.png" alt="pay button">
+   	</button>
+</div>
+</body>
+</html>

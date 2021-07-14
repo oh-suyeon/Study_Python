@@ -1,25 +1,27 @@
 import pymysql
 
-class DaoEmp:
+class DaoExam:
     
     def __init__(self):
         self.conn = pymysql.connect(host='127.0.0.1', user='root', password='python', db='mypydb', charset='utf8')
         self.cur = self.conn.cursor()
         
-    def insert(self, e_name, tel, address):
+    def insert(self, e_id, kor, eng, math):
         sql = f"""
-            INSERT INTO emp 
-                (e_name
-                , tel
-                , address
+            INSERT INTO exam 
+                (e_id
+                , kor
+                , eng
+                , math
                 , in_user_id
-                , in_date
+                , in_date 
                 , up_user_id
                 , up_date) 
             VALUES 
-                ('{e_name}'
-                , '{tel}'
-                , '{address}'
+                ( '{e_id}'
+                , '{kor}'
+                , '{eng}'
+                , '{math}'
                 , '1'
                 , DATE_FORMAT(NOW(), '%Y%m%d.%H%m%s')
                 , '1'
@@ -30,25 +32,26 @@ class DaoEmp:
         cnt = self.cur.rowcount
         return cnt
     
-    def update(self, e_id, e_name, tel, address):
+    def update(self, exam_id, e_id, kor, eng, math):
         sql = f"""
-            UPDATE emp 
-            SET e_name        = '{e_name}'
-                , tel         = '{tel}'
-                , address     = '{address}'
-                , up_user_id  = '2' 
-                , up_date     = DATE_FORMAT(NOW(), '%Y%m%d.%H%m%s')
-            WHERE e_id = {e_id} 
+            UPDATE exam 
+            SET e_id         = '{e_id}'
+                , kor        = '{kor}'
+                , eng        = '{eng}' 
+                , math       = '{math}'
+                , up_user_id = '1'
+                , up_date    = DATE_FORMAT(NOW(), '%Y%m%d.%H%m%s')
+            WHERE exam_id = {exam_id} 
             """
         self.cur.execute(sql)
         self.conn.commit()
         cnt = self.cur.rowcount
         return cnt
     
-    def delete(self, e_id):    
+    def delete(self, exam_id):    
         sql = f"""
-            DELETE FROM emp
-            WHERE e_id = '{e_id}'
+            DELETE FROM exam
+            WHERE exam_id = '{exam_id}'
             """
         self.cur.execute(sql)
         self.conn.commit()
@@ -59,20 +62,21 @@ class DaoEmp:
         ret = []
         sql = """ 
             select 
-                e_id
-                ,e_name
-                ,tel
-                ,address
+                exam_id
+                ,e_id
+                ,kor
+                ,eng
+                ,math
                 ,in_user_id
                 ,in_date
                 ,up_user_id
                 ,up_date
-            from emp
+            from exam
         """
         self.cur.execute(sql)
         rows = self.cur.fetchall()
         for row in rows:
-            ret.append({'e_id':row[0],'e_name':row[1],'tel':row[2],'address':row[3],'in_user_id':row[4],'in_date':row[5],'up_user_id':row[6],'up_date':row[7]}); 
+            ret.append({'exam_id':row[0],'e_id':row[1],'kor':row[2],'eng':row[3],'math':row[4],'in_user_id':row[5],'in_date':row[6],'up_user_id':row[7],'up_date':row[8]}); 
         return ret
     
     def __del__(self):
@@ -80,6 +84,6 @@ class DaoEmp:
         self.conn.close()
 
 if __name__=='__main__' :
-    de = DaoEmp()
-    cnt = de.insert('3', '3', '3', '3')
-    print(cnt)
+    dex = DaoExam()
+    list = dex.selctlist()
+    print(list)
