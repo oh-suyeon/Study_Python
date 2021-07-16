@@ -19,6 +19,12 @@ def main():
 @app.route("/kakaopay/paymethod.ajax", methods=['POST']) # 결제 준비 ([pay] 버튼 클릭 시)
 def paymethod():
     if request.method == 'POST':
+        
+        postdata = request.get_json(force=True)
+        print(postdata['item_name'])
+        print(postdata['qantity'])
+        print(postdata['total_amount'])
+        
         URL = 'https://kapi.kakao.com/v1/payment/ready' #결제 준비 API 호출
         headers = {
             'Authorization': "KakaoAK " + "d13a6511a060fb5b95c04824aa9c981d", #APP_ADMIN_KEY
@@ -28,11 +34,11 @@ def paymethod():
             "cid": "TC0ONETIME",            #가맹점 코드 (test)
             "partner_order_id": "1001",     #가맹점 주문번호
             "partner_user_id": "testuser",  #가맹점 회원 id
-            "item_name": "연어초밥",          #상품명
-            "quantity": 1,                  #상품 수량 
-            "total_amount": 12000,          #상품 총액          
+            "item_name": postdata['item_name'],          #상품명
+            "quantity": postdata['qantity'],             #상품 수량 
+            "total_amount": postdata['total_amount'],    #상품 총액          
             "tax_free_amount": 0,           #상품 비과세 금액  
-            "vat_amount" : 200,             #상품 부가세 금액 (값을 보내지 않을 경우 자동 계산)
+            # "vat_amount" : 200,             #상품 부가세 금액 (값을 보내지 않을 경우 자동 계산) - ajax로 값을 보낼 거니까 자동 계산하게 둠
             "approval_url": "http://127.0.0.1:5000/kakaopay/success",   #결제 성공 시 redirect url - pg_token가 쿼리로 함께 감
             "cancel_url": "http://127.0.0.1:5000/kakaopay/cancel",      #결제 취소 시 redirect url 
             "fail_url": "http://127.0.0.1:5000/kakaopay/fail"           #결제 실패 시 redirect url
