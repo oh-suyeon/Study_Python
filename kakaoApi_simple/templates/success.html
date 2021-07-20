@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>kakaopay</title>
+    <style>
+    </style>
+    <script src="/js/jquery-3.6.0.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+	<div>
+		<h2>결제가 완료되었습니다!</h2>
+		<h3>주문자 정보</h3>
+		<p>구매처 	: KAKAOPAY TEST</p>
+		<p>주문번호 	: {{ res.partner_order_id }}</p>
+		<p>상품명 	: {{ res.item_name }}</p>
+		<p>결제일시 	: {{ res.approved_at }}</p>
+		<p>결제금액 	: {{ context.amount }}원</p>
+		<a href="http://127.0.0.1:5000/">메인으로 돌아가기</a>
+	</div>
+</body>
+</html>

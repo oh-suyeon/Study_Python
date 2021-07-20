@@ -1,0 +1,59 @@
+  
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>kakaopay</title>
+    <script src="/js/jquery-3.6.0.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pay').on('click', function () {
+            	var postdata = {
+           			item_name : "{{item_name}}"
+           			,qantity : "{{qantity}}"
+           			,total_amount : "{{total_amount}}"
+            	}
+                $.ajax({
+                    url: "/kakaopay/paymethod.ajax",
+                    data: JSON.stringify(postdata),
+                    dataType: "json",
+                    type: "post",
+                    async: false,
+                    success: function (data) {
+                        location.href=data["next_url"]
+                    },
+                    error: function (xhr) {
+                        consol.log(xhr);
+                    }
+                });
+            });
+        })
+        
+        
+        $(document).ready(function () {
+            $('#cancel').on('click', function () {
+                $.ajax({
+                    url: "/kakaopay/cancel",
+                    dataType: "json",
+                    type: "post",
+                    async: false,
+                    success: function (data) {
+                        location.href=data["next_url"]
+                    },
+                    error: function (xhr) {
+                        consol.log(xhr);
+                    }
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+	<div>
+	    <h1>KAKAO PAY</h1>
+	   	<button type="button" id="pay">
+	   		카카오페이 결제
+	   	</button>
+	</div>
+</body>
+</html>
