@@ -1,0 +1,3 @@
+GsendEmail:djs02061@gmail.com
+NsendEmail:djs02061@naver.com
+password:Nervous!0506

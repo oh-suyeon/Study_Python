@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>로그인 (API 사용)</title>
+	<!-- 부트스트랩 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  	<!-- 구글 로그인 API ***** 안됨 -->
+  	<meta name ="google-signin-client_id" content="165145593922-el6ae1nsbah99nofrkc81l2n1sq1agai.apps.googleusercontent.com">
+  	<!-- 페이스북 로그인 API -->
+  	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v11.0&appId=187519070020782" nonce="SiOBIhLG"></script>
+  	<!-- 네이버 로그인 API -->
+  	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+  	<!-- 카카오톡 로그인 API -->
+  	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<style type="text/css">
+		wrap {
+			width: 1000px;
+		}
+		.title {
+			text-align: center;
+			font-weight: bold;
+			margin: 40px 0;
+		}
+		.subtitle {
+			text-align: center;
+			font-weight: bold;
+			margin: 20px 0;
+		}
+		.login_tb {
+			border-collapse: separate;
+			border-spacing: 0 5px;
+			margin: 0 auto;
+		}
+		.login_tb td:first-child {
+			width: 70px;
+		}
+		.login_btn_box {
+			margin: 10px 0;
+			display: flex;
+			justify-content: center;
+		}
+		.login_btn_box button {
+			width: 305px;
+		}
+		.login_find {
+			text-align: center;
+			margin: 20px 0;
+		}
+		.login_find span:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+		.socials {
+			width: 300px;
+			margin: 0 auto;
+			display: flex;
+			flex-flow: row wrap;
+		}
+		.socials > div {
+			width: calc(25% - 30px);
+			margin: 0 13px;
+		}
+		.socials img {
+			max-width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap">
+		<h2 class="title">Open API</h2>
+		<hr />
+		<h3 class="subtitle">로그인</h3>
+		<form>
+			<table class="login_tb">
+				<tr>
+					<td>
+						아이디
+					</td>
+					<td>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-user"></i>
+							</span>
+							<input type="text" class="form-control" name="memId">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						비밀번호
+					</td>
+					<td>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-lock"></i>
+							</span>
+							<input type="password" class="form-control" name="memPass">
+						</div>
+					</td>
+				</tr>
+			</table>
+			<div class="login_btn_box">
+				<button type="button" class="btn btn-info">로그인</button>
+			</div>
+		</form>
+		<div class="login_find">
+			<span>아이디/비밀번호 찾기 <span class="glyphicon glyphicon-chevron-right"></span></span>
+		</div>
+		<hr />
+		<h4 class="subtitle">다음 계정으로 로그인</h4>
+		<div class="socials">
+			<div id="kakao">
+				<a id="custom-login-btn" href="javascript:loginWithKakao()">
+					<img alt="카카오톡" src="image/kakao.png">
+				</a>
+			</div>
+			<div id="naver">
+				<div id="naver_id_login" style="margin: 2px 0 0 5px;"></div>
+			</div>
+			<div id="GgCustomLogin">
+				<a href="javascript:void(0)">
+					<img alt="구글" src="image/google.png">
+				</a>
+			</div>
+			<div onclick="fnFbCustomLogin();">
+				<a href="javascript:void(0)">
+					<img alt="페이스북" src="image/facebook.png">
+				</a>
+			</div>
+		</div>
+		<hr />
+	</div>
+</body>
+
+<script>
+	//구글
+	function init() {
+		gapi.load('auth2', function() {
+			gapi.auth2.init();
+			options = new gapi.auth2.SigninOptionsBuilder();
+			options.setPrompt('select_account');
+	        // 추가는 Oauth 승인 권한 추가 후 띄어쓰기 기준으로 추가
+			options.setScope('email profile openid https://www.googleapis.com/auth/user.birthday.read');
+	        // 인스턴스의 함수 호출 - element에 로그인 기능 추가
+	        // GgCustomLogin은 li태그안에 있는 ID, 위에 설정한 options와 아래 성공,실패시 실행하는 함수들
+			gapi.auth2.getAuthInstance().attachClickHandler('GgCustomLogin', options, onSignIn, onSignInFailure);
+		})
+	}
+	
+	function onSignIn(googleUser) {
+		var access_token = googleUser.getAuthResponse().access_token
+		$.ajax({
+	    	// people api를 이용하여 프로필 및 생년월일에 대한 선택동의후 가져온다.
+			url: 'https://people.googleapis.com/v1/people/me'
+	        // key에 자신의 API 키를 넣습니다.
+			, data: {personFields:'birthdays', key:'AIzaSyD64m4G_T3uSEyh9a3rtZ5AlgY9Psfpi78', 'access_token': access_token}
+			, method:'GET'
+		})
+		.done(function(e){
+	        //프로필을 가져온다.
+			var profile = googleUser.getBasicProfile();
+			console.log(profile)
+		})
+		.fail(function(e){
+			console.log(e);
+		})
+	}
+	
+	function onSignInFailure(t){		
+		console.log(t);
+	}
+	
+	
+	//페이스북
+	//기존 로그인 상태를 가져오기 위해 Facebook에 대한 호출
+	function statusChangeCallback(res){
+		statusChangeCallback(response);
+	}
+	
+	function fnFbCustomLogin(){
+		FB.login(function(response) {
+			if (response.status === 'connected') {
+				FB.api('/me', 'get', {fields: 'name,email'}, function(r) {
+					console.log(r);
+				})
+			} else if (response.status === 'not_authorized') {
+				// 사람은 Facebook에 로그인했지만 앱에는 로그인하지 않았습니다.
+				alert('앱에 로그인해야 이용가능한 기능입니다.');
+			} else {
+				// 그 사람은 Facebook에 로그인하지 않았으므로이 앱에 로그인했는지 여부는 확실하지 않습니다.
+				alert('페이스북에 로그인해야 이용가능한 기능입니다.');
+			}
+		}, {scope: 'public_profile,email'});
+	}
+	
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '187519070020782', // 내 앱 ID를 입력한다.
+			cookie     : true,
+			xfbml      : true,
+			version    : 'v11.0'
+		});
+		FB.AppEvents.logPageView();   
+	};
+	
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {
+			return;
+		}
+		
+		js = d.createElement(s);
+		js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	
+	
+	//네이버
+	var naver_id_login = new naver_id_login("sqKSQy5VxbIclm0CP1vZ", "http://localhost:5000/callback");
+  	var state = naver_id_login.getUniqState();
+  	naver_id_login.setButton("green", 1,40);
+  	naver_id_login.setDomain("YOUR_SERVICE_URL");
+  	naver_id_login.setState(state);
+	//naver_id_login.setPopup();
+  	naver_id_login.init_naver_id_login();
+	
+  	
+  	//카카오톡
+  	Kakao.init('a10559ca404676b4cd1bafbbd5710019');
+	function loginWithKakao() {
+		Kakao.Auth.authorize({
+			redirectUri: 'http://localhost:5000/loginCheck'
+		})
+ 	}
+	
+	// 아래는 데모를 위한 UI 코드입니다.
+	displayToken()
+	function displayToken() {
+    	const token = getCookie(null)
+		if(token) {
+			Kakao.Auth.setAccessToken(token)
+			Kakao.Auth.getStatusInfo(({ status }) => {
+				if(status === 'connected') {
+					document.getElementById('token-result').innerText = 'login success. token: ' + Kakao.Auth.getAccessToken()
+				} else {
+         				Kakao.Auth.setAccessToken(null)
+				}
+			})
+		}
+ 	}
+	
+	function getCookie(name) {
+		const value = "; " + document.cookie;
+		const parts = value.split("; " + name + "=");
+		if (parts.length === 2) {
+			return parts.pop().split(";").shift();
+		}
+	}
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+</html>

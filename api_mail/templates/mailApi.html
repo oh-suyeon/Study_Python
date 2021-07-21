@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/js/jquery-3.6.0.js" ></script>
+<script src="/js/axios.min.js" ></script>
+<script type="text/javascript">
+	function passFind(){
+		
+		var mail = $("#mymail").val();
+		
+		axios({
+	        method:"POST",
+	        url: 'pass_find.ajax',
+	        data:{
+	        	'myMail' : mail
+	        }
+	    }).then((res)=>{
+	    	if(res.data.result == "success"){
+	    		alert("메일이 전송되었습니다.")
+	    	} else {
+	    		alert("수정도중 문제가 생겼습니다.");
+	    	}
+	    }).catch(error=>{
+	        console.log(error);
+	        throw new Error(error);
+	    });	
+		
+	}
+</script>
+</head>
+<body>
+	<h2>비밀번호 찾기</h2>
+	<input type="text" placeholder="메일주소를 입력해주세요" id="mymail">
+	<button type="button" onclick="passFind()">비밀번호 받기</button>
+	
+</body>
+</html>

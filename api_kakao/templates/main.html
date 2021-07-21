@@ -5,9 +5,19 @@
     <meta charset="UTF-8">
     <title>kakaopay</title>
     <script src="/js/jquery-3.6.0.js"></script>
+    <style>
+    	div{
+    		text-align: center;
+    		margin-top: 250px; 
+    	}
+    	h1{
+    		font-size: 3em;
+    	}
+    </style>
     <script>
         $(document).ready(function () {
             $('#pay').on('click', function () {
+            	// ex. <checkbox> 선택 - <button> onclick 이벤트 - 선택된 값 가져오기 
             	var postdata = {
            			item_name : "{{item_name}}"
            			,qantity : "{{qantity}}"
@@ -49,11 +59,13 @@
     </script>
 </head>
 <body>
-	<div>
-	    <h1>KAKAO PAY</h1>
-	   	<button type="button" id="pay">
-	   		카카오페이 결제
-	   	</button>
-	</div>
+<div>
+    <h1>KAKAO PAY</h1>
+   	<button type="button" id="pay">
+   		<img src="images/payment_icon_yellow_medium.png" alt="pay button">
+   	</button>
+   	<br><br>
+   	<h3>결제를 위해 상단 이미지버튼을 클릭해 주세요.</h3>
+</div>
 </body>
 </html>
